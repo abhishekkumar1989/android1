@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.abhishek_k.testapp2.app1.contentprovider.ContactActivity"
+            android:name="com.abhishek_k.testapp2.app1.dictionary.MyFragmentActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.provider.UserDictionary;
 import android.widget.TextView;
 
 import com.abhishek_k.testapp2.app1.R;
@@ -37,13 +36,10 @@ public class ContactActivity extends Activity {
                 ContactsContract.Contacts.DISPLAY_NAME };
         String selection = ContactsContract.Contacts.IN_VISIBLE_GROUP + " = '"
                 + ("1") + "'";
-        String[] selectionArgs = null;
         String sortOrder = ContactsContract.Contacts.DISPLAY_NAME
                 + " COLLATE LOCALIZED ASC";
 
-
-        return managedQuery(uri, projection, selection, selectionArgs,
-                sortOrder);
+        return getContentResolver().query(uri, projection, selection, null, sortOrder);
     }
 
 }

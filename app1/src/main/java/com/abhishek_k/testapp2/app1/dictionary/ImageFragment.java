@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.abhishek_k.testapp2.app1.R;
 
 public class ImageFragment extends Fragment {
+
     int fragVal;
 
     static ImageFragment init(int val) {

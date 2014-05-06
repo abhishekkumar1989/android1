@@ -6,26 +6,38 @@
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Enter key: " />
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical|center_horizontal"
+        android:textSize="5mm"
+        android:background="#CCFF66"
+        android:text="Add new words" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content" >
 
     <EditText
         android:id="@+id/key"
-        android:layout_width="134dp"
+        android:layout_width="wrap_content"
         android:inputType="text"
+        android:hint="Key (Required)"
         android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enter meaning: " />
+        android:text=": "
+        android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/meaning"
-        android:layout_width="323dp"
+        android:layout_width="wrap_content"
+        android:hint="Meaning (Required)"
         android:inputType="text"
         android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"

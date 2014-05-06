@@ -1,127 +1,79 @@
 package com.abhishek_k.testapp2.app1.dictionary;
 
-import android.app.ListFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Button;
 
 import com.abhishek_k.testapp2.app1.R;
 
-public class DictionaryApp  {
+public class DictionaryApp extends FragmentActivity {
 
-//    private static final int NUM_TABS = 2;
-//
-//    MyAdapter mAdapter;
-//
-//    ViewPager mPager;
-//
-////    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-////        super.onCreate(savedInstanceState);
-////        setContentView(R.layout.fragment_pager);
-////
-////        mAdapter = new MyAdapter(getSupportFragmentManager());
-////
-////        mPager = (ViewPager) findViewById(R.id.pager);
-//
-//        // Providing implementation of {@link PagerAdapter} to generate the pages that the view shows
-//        mPager.setAdapter(mAdapter);
-//
-////        // Watch for button clicks.
-////        Button button = (Button) findViewById(R.id.goto_first);
-////        button.setOnClickListener(new View.OnClickListener() {
-////            public void onClick(View v) {
-////                mPager.setCurrentItem(0);
-////            }
-////        });
-////        button = (Button) findViewById(R.id.goto_last);
-////        button.setOnClickListener(new View.OnClickListener() {
-////            public void onClick(View v) {
-////                mPager.setCurrentItem(NUM_TABS - 1);
-////            }
-////        });
-//    }
-//
-//    public static class MyAdapter extends FragmentPagerAdapter {
-//        public MyAdapter(FragmentManager fm) {
-//            super(fm);
-//        }
-//
-//        @Override
-//        public int getCount() {
-//            return NUM_TABS;
-//        }
-//
-//        @Override
-//        public Fragment getItem(int position) {
-////            return ArrayListFragment.newInstance(position);
-//            // TODO:
-//            return null;
-//        }
-//
-//    }
-//
-//    public static class ArrayListFragment extends ListFragment {
-//        int mNum;
-//
-//        /**
-//         * Create a new instance of CountingFragment, providing "num"
-//         * as an argument.
-//         */
-//        static ArrayListFragment newInstance(int num) {
-//            ArrayListFragment f = new ArrayListFragment();
-//
-//            // Supply num input as an argument.
-//            Bundle args = new Bundle();
-//            args.putInt("num", num);
-//            f.setArguments(args);
-//
-//            return f;
-//        }
-//
-//        /**
-//         * When creating, retrieve this instance's number from its arguments.
-//         */
-//        @Override
-//        public void onCreate(Bundle savedInstanceState) {
-//            super.onCreate(savedInstanceState);
-//            mNum = getArguments() != null ? getArguments().getInt("num") : 1;
-//        }
-//
-//        /**
-//         * The Fragment's UI is just a simple text view showing its
-//         * instance number.
-//         */
-//        @Override
-//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                                 Bundle savedInstanceState) {
-//            View v = inflater.inflate(R.layout.fragment_pager_list, container, false);
-//            View tv = v.findViewById(R.id.text);
-//            ((TextView) tv).setText("Fragment #" + mNum);
-//            return v;
-//        }
-//
-//        @Override
-//        public void onActivityCreated(Bundle savedInstanceState) {
-//            super.onActivityCreated(savedInstanceState);
-//            setListAdapter(new ArrayAdapter<String>(getActivity(),
-//                    android.R.layout.simple_list_item_1, 0));
-//            //                    android.R.layout.simple_list_item_1, Cheeses.sCheeseStrings));
-//        }
-//
-//        @Override
-//        public void onListItemClick(ListView l, View v, int position, long id) {
-//            Log.i("FragmentList", "Item clicked: " + id);
-//        }
-//    }
+    private static final int NUM_TABS = 2;
+    private MyAdapter adapter;
+    private ViewPager pager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_pager);
+        adapter = new MyAdapter(getSupportFragmentManager());
+        pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(adapter);
+
+        Button button = (Button) findViewById(R.id.View);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                pager.setCurrentItem(0);
+            }
+        });
+        button = (Button) findViewById(R.id.Add);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                pager.setCurrentItem(NUM_TABS - 1);
+            }
+        });
+    }
+
+    public static class MyAdapter extends FragmentPagerAdapter {
+        public MyAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_TABS;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return DisplayWordFragment.init();
+                case 1:
+                    return AddWordFragment.init();
+            }
+            return null;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "Page " + position;
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
 
 }

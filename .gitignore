@@ -1,4 +1,5 @@
 *.orig
+.gradle/*
 logs
 *.iml
 *.orig

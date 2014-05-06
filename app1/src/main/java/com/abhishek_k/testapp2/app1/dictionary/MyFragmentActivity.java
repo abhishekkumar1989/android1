@@ -27,13 +27,13 @@ public class MyFragmentActivity extends FragmentActivity {
         adapter = new MyAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
 
-        Button button = (Button) findViewById(R.id.first);
+        Button button = (Button) findViewById(R.id.View);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 pager.setCurrentItem(0);
             }
         });
-        button = (Button) findViewById(R.id.last);
+        button = (Button) findViewById(R.id.Add);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 pager.setCurrentItem(ITEMS - 1);

@@ -23,7 +23,7 @@
         android:id="@+id/key"
         android:layout_width="wrap_content"
         android:inputType="text"
-        android:hint="Key (Required)"
+        android:hint="Word (Required)"
         android:layout_height="wrap_content" />
 
     <TextView

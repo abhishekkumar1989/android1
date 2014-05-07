@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#CCFF66"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="Words Display"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="5mm" />
+
+    <TextView
+        android:id="@+id/keytext"
+        android:background="#CCFFCC"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+        android:text="Key Name:"
+        android:textSize="3mm" />
+
+    <TextView
+        android:id="@+id/meaningtext"
+        android:layout_width="fill_parent"
+        android:background="#CCFFFF"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/keytext"
+        android:layout_marginLeft="10mm"
+        android:text="Meaning Text"
+        android:textSize="2.2mm" />
+
+</RelativeLayout>

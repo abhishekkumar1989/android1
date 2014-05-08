@@ -33,14 +33,17 @@ public class DisplayWordFragment extends Fragment {
 
     private void changeView() {
         final Word word = sqlHelper.readWord();
+
+//        EditText meaningText = (EditText) getView().findViewById(R.id.meaningtext);
+
         if (word != null) {
             Log.d(DisplayWordFragment.class.getName(), "Attempting for changing the view to, " + word.toString());
-            if (keyText != null && meaningText != null) {
+            if (keyText != null && this.meaningText != null) {
                 keyText.post(new Runnable() {
                     @Override
                     public void run() {
                         keyText.setText(word.getWord());
-                        meaningText.setText(word.getMeaning());
+                        DisplayWordFragment.this.meaningText.setText(word.getMeaning());
                     }
                 });
                 Log.d(DisplayWordFragment.class.getName(), "Changed the display view, " + word.toString());
@@ -82,4 +85,8 @@ public class DisplayWordFragment extends Fragment {
         return viewLayout;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
 }

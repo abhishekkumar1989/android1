@@ -4,6 +4,14 @@
     <string name="app_name">TestApp2</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
     <color name="myColor">#F5F5F5</color>
+
+    <string name="title_activity_test_tabbed">TestTabbedActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <item name="button1" type="id" />
 
 </resources>

@@ -38,6 +38,10 @@ public class DictionarySQLHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public Word addWord(Word word) {
+        return addWord(word.getWord(), word.getMeaning());
+    }
+
     public Word addWord(String key, String meaning) {
         ContentValues values = new ContentValues();
         values.put(KEY, key);

@@ -8,6 +8,7 @@ logs
 *.iws
 *.log
 .idea
+build.gradle
 degub.keystore
 gradle.properties
 gradlew

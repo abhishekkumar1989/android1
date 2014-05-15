@@ -7,6 +7,8 @@ import android.widget.Toast;
 
 import com.abhishek_k.testapp2.app1.MainActivity;
 
+import java.util.Arrays;
+
 public class NetworkCall extends AsyncTask<String, Integer, String> {
 
     private MainActivity activity;
@@ -34,7 +36,7 @@ public class NetworkCall extends AsyncTask<String, Integer, String> {
 
     @Override
     protected void onProgressUpdate(Integer... values) {
-        Log.d("network-call", "On Progress Update: : " + values.toString());
+        Log.d("network-call", "On Progress Update: : " + Arrays.toString(values));
         Toast.makeText(activity, values.toString(), Toast.LENGTH_LONG).show();
         //  invoked on the UI thread
         super.onProgressUpdate(values);

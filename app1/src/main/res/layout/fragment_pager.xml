@@ -25,15 +25,23 @@
             android:id="@+id/View"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="View Words" >
+            android:text="View" >
         </Button>
 
         <Button
             android:id="@+id/Add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Word" >
+            android:text="Add" >
         </Button>
+
+        <Button
+            android:id="@+id/change_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Switch" >
+        </Button>
+
     </LinearLayout>
 
 </LinearLayout>

@@ -72,6 +72,7 @@ public class MainActivity extends ActionBarActivity {
                 Log.d("button-clicked", "Network button is clicked");
                 NetworkCall networkCall = new NetworkCall(this);
 
+//                getApplication().
                 // Run parallelly
                 networkCall.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "https://talk.to/api/history/status");
 

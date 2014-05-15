@@ -7,12 +7,15 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.abhishek_k.testapp2.app1.R;
 import com.abhishek_k.testapp2.app1.dictionary.Word;
+
+import static android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE;
 
 public class WordAdderFragment extends Fragment {
 
@@ -38,6 +41,11 @@ public class WordAdderFragment extends Fragment {
             }
         });
         return layoutView;
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        return super.onCreateAnimation(TRANSIT_FRAGMENT_FADE, enter, TRANSIT_FRAGMENT_FADE);
     }
 
     public void addWord() {

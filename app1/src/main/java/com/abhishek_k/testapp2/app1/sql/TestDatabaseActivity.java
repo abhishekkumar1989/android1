@@ -1,7 +1,6 @@
 package com.abhishek_k.testapp2.app1.sql;
 
 import android.app.ListActivity;
-import android.content.CursorLoader;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;

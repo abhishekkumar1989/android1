@@ -1,5 +1,8 @@
 package com.abhishek_k.testapp2.app1.dic1;
 
+import android.animation.LayoutTransition;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -23,6 +26,7 @@ public class DictionaryApp extends FragmentActivity implements WordAdderListener
     private ViewPager pager;
     private DictionarySQLHelper sqlHelper;
 
+    @TargetApi(11)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +34,12 @@ public class DictionaryApp extends FragmentActivity implements WordAdderListener
         sqlHelper = new DictionarySQLHelper(this);
         MyAdapter adapter = new MyAdapter(getSupportFragmentManager());
         pager = (ViewPager) findViewById(R.id.pager);
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+            LayoutTransition lt = new LayoutTransition();
+            lt.enableTransitionType(LayoutTransition.CHANGING);
+            pager.setLayoutTransition(lt);
+        }
         pager.setAdapter(adapter);
 
         Button button = (Button) findViewById(R.id.View);
@@ -44,6 +54,17 @@ public class DictionaryApp extends FragmentActivity implements WordAdderListener
                 pager.setCurrentItem(NUM_TABS - 1);
             }
         });
+//        button = (Button) findViewById(R.id.change_fragment);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FragmentManager fm = getSupportFragmentManager();
+//                FragmentTransaction ft = fm.beginTransaction();
+//                ft.add(WordDisplayFragment.init(), "display1");
+//                ft.commit();
+//                fm.findFragmentByTag("display1");
+//            }
+//        });
     }
 
     @Override

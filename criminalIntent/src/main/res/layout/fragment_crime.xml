@@ -25,6 +25,7 @@
                 android:background="@android:color/darker_gray"
                 android:cropToPadding="true"
                 android:scaleType="centerInside" />
+
             <ImageButton
                 android:id="@+id/crime_imageButton"
                 android:layout_width="match_parent"
@@ -73,5 +74,21 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:text="@string/crime_solved_label" />
+
+    <Button
+        android:id="@+id/crime_suspectButton"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_height="wrap_content"
+        android:text="@string/crime_suspect_text" />
+
+    <Button
+        android:id="@+id/crime_reportButton"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_height="wrap_content"
+        android:text="@string/crime_report_text" />
 
 </LinearLayout>

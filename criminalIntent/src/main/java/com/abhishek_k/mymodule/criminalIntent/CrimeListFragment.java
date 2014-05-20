@@ -1,6 +1,7 @@
 package com.abhishek_k.mymodule.criminalIntent;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.abhishek_k.mymodule.criminalIntent.model.Crime;
 import com.abhishek_k.mymodule.criminalIntent.model.CrimeLab;
+import com.abhishek_k.mymodule.criminalIntent.utils.Helper;
 
 import java.util.ArrayList;
 
@@ -142,15 +144,20 @@ public class CrimeListFragment extends ListFragment {
             }
 
             Crime crime = getItem(position);
-            TextView titleTextView =
-                    (TextView) convertView.findViewById(R.id.crime_list_item_titleTextView);
+            TextView titleTextView = (TextView) convertView.findViewById(R.id.crime_list_item_titleTextView);
             titleTextView.setText(crime.getTitle());
-            TextView dateTextView =
-                    (TextView) convertView.findViewById(R.id.crime_list_item_dateTextView);
-            dateTextView.setText(crime.getDate().toString());
-            CheckBox solvedCheckBox =
-                    (CheckBox) convertView.findViewById(R.id.crime_list_item_solvedCheckBox);
+            TextView dateTextView = (TextView) convertView.findViewById(R.id.crime_list_item_dateTextView);
+            dateTextView.setText(Helper.strDate(crime.getDate()));
+            CheckBox solvedCheckBox = (CheckBox) convertView.findViewById(R.id.crime_list_item_solvedCheckBox);
             solvedCheckBox.setChecked(crime.isSolved());
+            TextView suspectNameView = (TextView) convertView.findViewById(R.id.crime_list_item_suspectName);
+            if (crime.getSuspect() != null) {
+                suspectNameView.setTypeface(Typeface.DEFAULT_BOLD);
+                suspectNameView.setText(crime.getSuspect());
+            } else {
+                suspectNameView.setTypeface(Typeface.DEFAULT);
+                suspectNameView.setText(R.string.no_suspect_found);
+            }
             return convertView;
         }
     }

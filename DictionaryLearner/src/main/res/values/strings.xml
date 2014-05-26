@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DictionaryLearner</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="add_word">Add Word</string>
+    <string name="word_label">Word</string>
+    <string name="meaning_label">Meaning</string>
+    <string name="update_button_label">Update word</string>
+    <string name="delete_button_label">Delete Word</string>
+
+</resources>

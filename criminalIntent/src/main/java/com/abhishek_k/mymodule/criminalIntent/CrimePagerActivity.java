@@ -13,7 +13,8 @@ import com.abhishek_k.mymodule.criminalIntent.model.CrimeLab;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class CrimePagerActivity extends FragmentActivity {
+public class CrimePagerActivity extends FragmentActivity
+        implements CrimeFragment.Callbacks {
 
     private ViewPager mViewPager;
     private ArrayList<Crime> mCrimes;
@@ -56,7 +57,7 @@ public class CrimePagerActivity extends FragmentActivity {
             @Override
             public void onPageSelected(int position) {
                 Crime crime = mCrimes.get(position);
-                if(crime.getTitle() != null) setTitle(crime.getTitle());
+                if (crime.getTitle() != null) setTitle(crime.getTitle());
             }
 
             @Override
@@ -65,4 +66,8 @@ public class CrimePagerActivity extends FragmentActivity {
         });
     }
 
+    @Override
+    public void onCrimeUpdated(Crime crime) {
+
+    }
 }

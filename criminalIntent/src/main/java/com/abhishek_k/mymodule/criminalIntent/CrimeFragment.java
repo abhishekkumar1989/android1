@@ -55,6 +55,26 @@ public class CrimeFragment extends Fragment {
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_PHOTO = 1;
     private static final int REQUEST_CONTACT = 2;
+    private Callbacks mCallbacks;
+
+    /**
+     * Required interface for hosting activities.
+     */
+    public interface Callbacks {
+        void onCrimeUpdated(Crime crime);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCallbacks = (Callbacks) activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,7 +100,7 @@ public class CrimeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // false = whether to add the inflated view to the view's parent.
         // We will explicitly add the inflated view to the view's parent
-        Log.d(TAG, "CrimeFragment onCreateView() called");
+        Log.d(TAG, "onCreateView() called");
         View view = inflater.inflate(R.layout.fragment_crime, container, false);
 
         mSuspectButton = (Button) view.findViewById(R.id.crime_suspectButton);
@@ -140,6 +160,8 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mCrime.setTitle(s.toString());
+                mCallbacks.onCrimeUpdated(mCrime);
+                getActivity().setTitle(mCrime.getTitle());
             }
 
             @Override
@@ -170,6 +192,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mCrime.setSolved(isChecked);
+                mCallbacks.onCrimeUpdated(mCrime);
             }
         });
         if (NavUtils.getParentActivityName(getActivity()) != null)
@@ -225,6 +248,7 @@ public class CrimeFragment extends Fragment {
         if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mCrime.setDate(date);
+            mCallbacks.onCrimeUpdated(mCrime);
             mDateButton.setText(mCrime.getDate().toString());
             updateDate();
         } else if (requestCode == REQUEST_PHOTO) {
@@ -232,14 +256,13 @@ public class CrimeFragment extends Fragment {
             if (filename != null) {
                 Photo p = new Photo(filename);
                 mCrime.setPhoto(p);
+                mCallbacks.onCrimeUpdated(mCrime);
                 showPhoto();
                 Log.i(TAG, "Crime: " + mCrime.getTitle() + " has a photo " + filename);
             }
         } else if (requestCode == REQUEST_CONTACT) {
             Uri contactUri = data.getData();
             String[] queryFields = new String[]{ContactsContract.Contacts.DISPLAY_NAME};
-            // Perform your query - the contactUri is like a "where"
-            // clause here
             Cursor c = getActivity().getContentResolver().query(contactUri, queryFields, null, null, null);
             if (c.getCount() == 0) {
                 c.close();
@@ -248,6 +271,7 @@ public class CrimeFragment extends Fragment {
             c.moveToFirst();
             String suspect = c.getString(0);
             mCrime.setSuspect(suspect);
+            mCallbacks.onCrimeUpdated(mCrime);
             mSuspectButton.setText(suspect);
             c.close();
         }

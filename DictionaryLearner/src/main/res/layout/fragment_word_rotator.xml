@@ -23,8 +23,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.9">
+            android:layout_height="0dp"
+            android:layout_weight="1">
             <TextView
                 android:id="@+id/meaning_viewer"
                 android:layout_width="match_parent"
@@ -37,8 +37,7 @@
         <Button
             android:id="@+id/quiz_playButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
+            android:layout_height="80dp"
             android:text="@string/quiz_play_button" />
     </LinearLayout>
 </LinearLayout>

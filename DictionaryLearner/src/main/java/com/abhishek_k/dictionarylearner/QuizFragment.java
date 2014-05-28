@@ -26,7 +26,7 @@ public class QuizFragment extends Fragment {
     private Button submitAnswerButton;
     private Button nextQuestionButton;
     private QuizQuestion question;
-    private int currentIndex;
+    private int currentIndex = 0;
     private WordHandlerService handlerService;
     private static final String LOG_TAG = QuizFragment.class.getSimpleName();
     private static final String CURRENT_QUES_INDEX = "current_quiz_index";
@@ -36,9 +36,7 @@ public class QuizFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         if (savedInstanceState != null) {
-            currentIndex = savedInstanceState.getInt(CURRENT_QUES_INDEX, 1);
-        } else {
-            currentIndex = 1;
+            currentIndex = savedInstanceState.getInt(CURRENT_QUES_INDEX, 0);
         }
         getActivity().setTitle(R.string.play_quiz);
         Log.d(LOG_TAG, "onCreate() currentIndex is: " + currentIndex);
@@ -65,9 +63,9 @@ public class QuizFragment extends Fragment {
                 RadioButton checkedButton = (RadioButton) optionsRadio.findViewById(checkedRadioButtonId);
                 String userAnswer = checkedButton.getText().toString();
                 if (userAnswer.equals(question.getAnswer())) {
-                    Toast.makeText(getActivity(), "Correct :)", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Correct :)", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity(), "Failed, Correct answer is: " + question.getAnswer(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Failed, Correct answer is: " + question.getAnswer(), Toast.LENGTH_SHORT).show();
                 }
                 getAndSetNextQuestion();
             }
@@ -103,7 +101,7 @@ public class QuizFragment extends Fragment {
         submitAnswerButton.setEnabled(false);
         if (question != null) {
             int currentQuestionId = question.getQuestionId();
-            handlerService.quizQuestion(currentQuestionId + 1);
+            handlerService.quizQuestion(currentQuestionId);
         }
     }
 

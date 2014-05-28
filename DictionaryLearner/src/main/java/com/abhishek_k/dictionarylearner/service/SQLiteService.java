@@ -59,7 +59,7 @@ public class SQLiteService extends SQLiteOpenHelper {
     }
 
     public QuizQuestion getQuestion(int questionId) {
-        Cursor cursor = getReadableDatabase().query(TABLE_QUIZ_NAME, allQuizColumns, QUESTION_ID + "=" + questionId, null, null, null, "RANDOM()", "1");
+        Cursor cursor = getReadableDatabase().query(TABLE_QUIZ_NAME, allQuizColumns, QUESTION_ID + ">" + questionId, null, null, null, QUESTION_ID + " ASC", "1");
         cursor.moveToLast();
         QuizQuestion question = null;
         while (!cursor.isAfterLast()) {

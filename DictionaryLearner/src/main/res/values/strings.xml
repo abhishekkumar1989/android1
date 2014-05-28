@@ -22,5 +22,10 @@
     <string name="quiz_question">Quiz question</string>
     <string name="submit_quiz_answer_button">Submit</string>
     <string name="add_to_rotator_list">Add to rotator</string>
+    <string name="next_quiz_question_button">Next Question</string>
+    <string name="quiz_completion_hurrey_notification">Hurrey!!</string>
+    <string name="quiz_completion_message_notification">Quiz is completed</string>
+    <string name="play_quiz">Play Quiz</string>
+    <string name="quiz_completed_message">Quiz Completed</string>
 
 </resources>

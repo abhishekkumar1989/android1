@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.abhishek_k.dictionarylearner.model.Word;
@@ -20,6 +21,7 @@ public class WordsRotatorFragment extends Fragment {
     private TextView wordView;
     private TextView meaningView;
     private WordHandlerService handlerThread;
+    private Button quizPlayButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,10 +34,17 @@ public class WordsRotatorFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_word_rotator, container, false);
         wordView = (TextView) view.findViewById(R.id.word_viewer);
         meaningView = (TextView) view.findViewById(R.id.meaning_viewer);
+        quizPlayButton = (Button) view.findViewById(R.id.quiz_playButton);
+        quizPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startQuizActivity(v);
+            }
+        });
         wordView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startEditingWordActivity();
             }
         });
 
@@ -47,16 +56,15 @@ public class WordsRotatorFragment extends Fragment {
                 updateWord(word);
             }
         });
-        wordView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), WordActivity.class);
-                intent.putExtra(WordFragment.EXTRA_WORDKEY, wordView.getText().toString());
-                intent.putExtra(WordFragment.EXTRA_MEANINGKEY, meaningView.getText().toString());
-                startActivity(intent);
-            }
-        });
+
         return view;
+    }
+
+    private void startEditingWordActivity() {
+        Intent intent = new Intent(getActivity(), WordActivity.class);
+        intent.putExtra(WordFragment.EXTRA_WORDKEY, wordView.getText().toString());
+        intent.putExtra(WordFragment.EXTRA_MEANINGKEY, meaningView.getText().toString());
+        startActivity(intent);
     }
 
     private void updateWord(Word word) {
@@ -66,6 +74,11 @@ public class WordsRotatorFragment extends Fragment {
         }
         wordView.setText(word.getWord());
         meaningView.setText(word.getMeaning());
+    }
+
+    public void startQuizActivity(View view) {
+        Intent intent = new Intent(getActivity(), QuizActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -80,12 +93,18 @@ public class WordsRotatorFragment extends Fragment {
         inflater.inflate(R.menu.dictionary, menu);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_add_word:
                 Intent intent = new Intent(getActivity(), WordActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.menu_item_edit_word:
+                startEditingWordActivity();
+                return true;
+            case R.id.menu_item_settings:
+                intent = new Intent(getActivity(), SettingsActivity.class);
                 startActivity(intent);
                 return true;
             default:

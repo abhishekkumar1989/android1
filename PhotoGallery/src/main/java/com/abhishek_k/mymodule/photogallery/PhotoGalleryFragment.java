@@ -1,11 +1,15 @@
 package com.abhishek_k.mymodule.photogallery;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Looper;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -14,52 +18,75 @@ import android.widget.ImageView;
 
 import com.abhishek_k.mymodule.photogallery.model.GalleryItem;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class PhotoGalleryFragment extends Fragment {
 
     private GridView mGridView;
-    ArrayList<GalleryItem> mItems;
-    ThumbnailDownloader<ImageView> mThumbnailThread;
+    private ArrayList<GalleryItem> mItems;
     private static final String TAG = "PhotoGalleryFragment";
-
+    private ThumbnailDownloader<ImageView> mThumbnailThread;
+    private String query = "cat";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         setRetainInstance(true);
         new FetchItemsTask().execute();
-
-        mThumbnailThread = new ThumbnailDownloader<ImageView>();
+        mThumbnailThread = new ThumbnailDownloader<ImageView>(new Handler());
+        mThumbnailThread.setListener(new ThumbnailDownloader.Callback<ImageView>() {
+            @Override
+            public void handleResponse(ImageView imageView, Bitmap thumbnail) {
+                if (isVisible()) {
+                    imageView.setImageBitmap(thumbnail);
+                }
+            }
+        });
         mThumbnailThread.start();
-        Looper looper = mThumbnailThread.getLooper();
-        Log.i(TAG, "Background thread 'ThumbnailDownloader' started");
+        mThumbnailThread.getLooper();
+        Log.i(TAG, "Background thread started");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo_gallery, container, false);
         mGridView = (GridView) view.findViewById(R.id.gridView);
+        setAdapter();
         return view;
     }
 
-    private class FetchItemsTask extends AsyncTask<Void, Void, Void> {
+    private void setAdapter() {
+        if (getActivity() == null || mGridView == null) return;
+        if (mItems != null) {
+            mGridView.setAdapter(new GalleryItemAdapter(mItems));
+        } else {
+            mGridView.setAdapter(null);
+        }
+    }
+
+    private class FetchItemsTask extends AsyncTask<Void, Void, ArrayList<GalleryItem>> {
+
         @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                String result = new FlickrFetchr().getUrl("http://www.google.com");
-                Log.i(TAG, "Fetched contents of URL: " + result);
-            } catch (IOException ioe) {
-                Log.e(TAG, "Failed to fetch URL: ", ioe);
+        protected ArrayList<GalleryItem> doInBackground(Void... params) {
+            if (query != null) {
+                return new FlickrFetchr().search(query);
+            } else {
+                return new FlickrFetchr().fetchItems();
             }
-            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<GalleryItem> galleryItems) {
+            mItems = galleryItems;
+            setAdapter();
         }
     }
 
     private class GalleryItemAdapter extends ArrayAdapter<GalleryItem> {
-        public GalleryItemAdapter(ArrayList<GalleryItem> items) {
-            super(getActivity(), 0, items);
+
+        public GalleryItemAdapter(ArrayList<GalleryItem> mItems) {
+            super(getActivity(), 0, mItems);
         }
 
         @Override
@@ -68,7 +95,7 @@ public class PhotoGalleryFragment extends Fragment {
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.gallery_item, parent, false);
             }
             ImageView imageView = (ImageView) convertView.findViewById(R.id.gallery_item_imageView);
-            imageView.setImageResource(R.drawable.brian_up_close);
+            imageView.setImageResource(R.drawable.ic_menu_refresh);
             GalleryItem item = getItem(position);
             mThumbnailThread.queueThumbnail(imageView, item.getUrl());
             return convertView;
@@ -79,6 +106,31 @@ public class PhotoGalleryFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mThumbnailThread.quit();
-        Log.i(TAG, "Background thread 'ThumbnailDownloader' destroyed");
+        Log.i(TAG, "Background thread destroyed");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mThumbnailThread.clearQueue();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_photo_gallery, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_search:
+                getActivity().onSearchRequested();
+                return true;
+            case R.id.menu_item_clear:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

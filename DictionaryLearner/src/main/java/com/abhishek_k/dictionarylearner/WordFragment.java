@@ -3,10 +3,12 @@ package com.abhishek_k.dictionarylearner;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -87,7 +89,7 @@ public class WordFragment extends Fragment {
                 String wordName = wordText.getText().toString();
                 String wordMeaning = meaningText.getText().toString();
                 if (wordName.equals("") || wordMeaning.equals("")) {
-                    Toast.makeText(getActivity(), "Fields can't be empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.warning_empty_fields, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 handlerService.addOrUpdate(new Word(wordName, wordMeaning));
@@ -100,7 +102,7 @@ public class WordFragment extends Fragment {
                 String wordName = wordText.getText().toString();
                 String wordMeaning = meaningText.getText().toString();
                 if (wordName.equals("")) {
-                    Toast.makeText(getActivity(), "Empty word is requested to delete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.warning_empty_word_to_delete, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 handlerService.remove(new Word(wordName, wordMeaning));
@@ -113,13 +115,32 @@ public class WordFragment extends Fragment {
             @Override
             public void handleResponse(Word word) {
                 if (word == null) {
-                    Toast.makeText(getActivity(), "Activity Failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), R.string.failed_activity_message, Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getActivity(), "Activity Success", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.success_activity_message, Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+        setHasOptionsMenu(true);
+        if(NavUtils.getParentActivityName(getActivity()) != null) {
+            getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        
         return view;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if(NavUtils.getParentActivityName(getActivity()) != null) {
+                    NavUtils.navigateUpFromSameTask(getActivity());
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

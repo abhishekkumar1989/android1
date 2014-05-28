@@ -8,5 +8,19 @@
     <string name="meaning_label">Meaning</string>
     <string name="update_button_label">Update word</string>
     <string name="delete_button_label">Delete Word</string>
+    <string name="edit_word">Edit Word</string>
+    <string name="settings">Settings</string>
+    <string name="setting_update">Update</string>
+    <string name="warning_wrong_rotator_value">Enter valid rotator value</string>
+    <string name="success_activity_message">Success</string>
+    <string name="new_ms_is_zero">0</string>
+    <string name="failed_activity_message">Failed</string>
+    <string name="warning_empty_word_to_delete">Empty word is requested to delete</string>
+    <string name="warning_empty_fields">Fields can\'t be empty</string>
+    <string name="hint_rotator_millis">New rotation time (in ms)</string>
+    <string name="quiz_play_button">Play Quiz</string>
+    <string name="quiz_question">Quiz question</string>
+    <string name="submit_quiz_answer_button">Submit</string>
+    <string name="add_to_rotator_list">Add to rotator</string>
 
 </resources>

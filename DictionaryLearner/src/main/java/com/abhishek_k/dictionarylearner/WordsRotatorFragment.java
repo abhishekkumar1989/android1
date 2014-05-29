@@ -1,6 +1,8 @@
 package com.abhishek_k.dictionarylearner;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.abhishek_k.dictionarylearner.model.Word;
@@ -37,25 +40,43 @@ public class WordsRotatorFragment extends Fragment {
         wordView = (TextView) view.findViewById(R.id.word_viewer);
         meaningView = (TextView) view.findViewById(R.id.meaning_viewer);
         quizPlayButton = (Button) view.findViewById(R.id.quiz_playButton);
-        quizPlayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startQuizActivity(v);
-            }
-        });
         wordView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startEditingWordActivity();
             }
         });
-
         handlerThread = WordHandlerService.get(getActivity());
         handlerThread.addRotatorHandler(new Handler());
         handlerThread.registerDisplayCb(new WordHandlerService.Callback() {
             @Override
             public void handleResponse(Word word) {
                 updateWord(word);
+            }
+        });
+
+        quizPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder userPopup = new AlertDialog.Builder(getActivity());
+                userPopup.setTitle(R.string.give_username_label);
+                userPopup.setMessage("Please provide your username");
+                final EditText input = new EditText(getActivity());
+                userPopup.setView(input);
+                userPopup.setPositiveButton("Go", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String username = input.getText().toString();
+                        startQuizActivity(username.equals("") ? "Guest" : username);
+                    }
+                });
+                userPopup.setNegativeButton("Play as Guest", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startQuizActivity("Guest");
+                    }
+                });
+                userPopup.show();
             }
         });
 
@@ -78,9 +99,9 @@ public class WordsRotatorFragment extends Fragment {
         meaningView.setText(word.getMeaning());
     }
 
-    public void startQuizActivity(View view) {
+    public void startQuizActivity(String username) {
         Intent intent = new Intent(getActivity(), QuizActivity.class);
-        intent.putExtra(EXTRA_USER_NAME, "Guest");
+        intent.putExtra(EXTRA_USER_NAME, username);
         startActivity(intent);
     }
 

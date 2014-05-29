@@ -126,7 +126,7 @@ public class QuizFragment extends Fragment {
     private void setQuiz() {
         if (question == null) {
             Log.d(LOG_TAG, "Setting question: null");
-            Toast.makeText(getActivity(), "You completed the quiz", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "You completed the quiz", Toast.LENGTH_SHORT).show();
             nextQuestionButton.setEnabled(false);
             Intent intent = new Intent(getActivity(), QuizCompletionActivity.class);
             Bundle bundle = new Bundle();

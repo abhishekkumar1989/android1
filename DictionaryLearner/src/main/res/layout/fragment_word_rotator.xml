@@ -34,10 +34,27 @@
                 android:textSize="25sp" />
         </ScrollView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/stop_wordSlide_button"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="@string/word_stop_slide_buttonLabel" />
+            <Button
+                android:id="@+id/get_next_word_button"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:text="@string/next_word_buttonLabel" />
+            </LinearLayout>
         <Button
             android:id="@+id/quiz_playButton"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="70dp"
             android:text="@string/quiz_play_button" />
     </LinearLayout>
 </LinearLayout>

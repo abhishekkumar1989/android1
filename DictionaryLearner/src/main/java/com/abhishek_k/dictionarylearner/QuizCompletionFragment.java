@@ -37,19 +37,20 @@ public class QuizCompletionFragment extends Fragment {
         totalWrongAnsweredView = (TextView) view.findViewById(R.id.user_wrongly_answered_text);
         totalUnAnsweredView = (TextView) view.findViewById(R.id.user_unanswered_text);
 
-        if(report != null) {
+        if (report != null) {
             userMessageView.setVisibility(View.VISIBLE);
             totalAnsweredView.setVisibility(View.VISIBLE);
             totalWrongAnsweredView.setVisibility(View.VISIBLE);
             totalUnAnsweredView.setVisibility(View.VISIBLE);
 
-            totalAnsweredView.append(valueOf(report.getCorrect()));
-            totalWrongAnsweredView.append(valueOf(report.getWrong()));
-            totalUnAnsweredView.append(valueOf(report.getUnAnswered()));
+            userMessageView.append(" " + report.getUserName());
+            totalAnsweredView.append(" " + valueOf(report.getCorrect()));
+            totalWrongAnsweredView.append(" " + valueOf(report.getWrong()));
+            totalUnAnsweredView.append(" " + valueOf(report.getUnAnswered()));
         }
 
         getActivity().setTitle(R.string.quiz_completed_message);
-        if(NavUtils.getParentActivityName(getActivity()) != null) {
+        if (NavUtils.getParentActivityName(getActivity()) != null) {
             getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         return view;

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.abhishek_k.dictionarylearner.model.Word;
@@ -27,8 +29,11 @@ public class WordsRotatorFragment extends Fragment {
     private TextView meaningView;
     private WordHandlerService handlerThread;
     private Button quizPlayButton;
+    private ImageButton rotatorStopButton;
+    private ImageButton rotatorStartButton;
+    private Button nextWordButton;
+    private static final String LOG_TAG = WordsRotatorFragment.class.getSimpleName();
 
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -39,6 +44,11 @@ public class WordsRotatorFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_word_rotator, container, false);
         wordView = (TextView) view.findViewById(R.id.word_viewer);
         meaningView = (TextView) view.findViewById(R.id.meaning_viewer);
+
+        rotatorStopButton = (ImageButton) view.findViewById(R.id.stop_wordSlide_button);
+        rotatorStartButton = (ImageButton) view.findViewById(R.id.start_wordSlide_button);
+        nextWordButton = (Button) view.findViewById(R.id.get_next_word_button);
+
         quizPlayButton = (Button) view.findViewById(R.id.quiz_playButton);
         wordView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +87,36 @@ public class WordsRotatorFragment extends Fragment {
                     }
                 });
                 userPopup.show();
+            }
+        });
+
+        rotatorStopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG_TAG, "Stopping the rotator");
+                handlerThread.stopRotatorRunnable();
+                rotatorStopButton.setEnabled(false);
+                rotatorStartButton.setEnabled(true);
+            }
+        });
+        rotatorStartButton.setEnabled(false);
+        rotatorStartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG_TAG, "Starting the rotator");
+                handlerThread.modifyScheduler(WordHandlerService.rotateMillis);
+                rotatorStartButton.setEnabled(false);
+                rotatorStopButton.setEnabled(true);
+            }
+        });
+        nextWordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LOG_TAG, "Fetching the nex word");
+                handlerThread.stopRotatorRunnable();
+                handlerThread.getRandomWord();
+                rotatorStopButton.setEnabled(false);
+                rotatorStartButton.setEnabled(true);
             }
         });
 

@@ -33,6 +33,7 @@
     <string name="quiz_completion_total_left">Total UnAnswered: </string>
     <string name="give_username_label">Enter Username</string>
     <string name="word_stop_slide_buttonLabel">Stop Show</string>
-    <string name="next_word_buttonLabel">Next Word</string>
+    <string name="next_word_buttonLabel">Random Word</string>
+    <string name="word_start_slide_buttonLabel">Start show</string>
 
 </resources>

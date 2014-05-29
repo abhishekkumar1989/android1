@@ -23,10 +23,11 @@ public class WordHandlerService {
     private static final String LOG_TAG = WordHandlerService.class.getSimpleName();
     private ScheduledExecutorService executorService;
     private static WordHandlerService handlerService;
-    private static long rotateMillis = 2000;
+    public static long rotateMillis = 3000;
+    private boolean isRotatorRunnableRunning = false;
 
     public static WordHandlerService get(Context context) {
-        if(handlerService == null) {
+        if (handlerService == null) {
             handlerService = new WordHandlerService(context);
         }
         return handlerService;
@@ -34,23 +35,42 @@ public class WordHandlerService {
 
     private WordHandlerService(Context context) {
         this.context = context;
-        startExecutor();
+        startExecutor(true);
     }
 
-    private void startExecutor() {
+    private void startExecutor(boolean runRotatorRunnable) {
         executorService = new ScheduledThreadPoolExecutor(1);
-        executorService.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                handleRandomWord();
-            }
-        }, 0, rotateMillis, TimeUnit.MILLISECONDS);
+        if (runRotatorRunnable) {
+            isRotatorRunnableRunning = true;
+            executorService.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    handleRandomWord();
+                }
+            }, 0, rotateMillis, TimeUnit.MILLISECONDS);
+        }
     }
 
     public void modifyScheduler(long newRotateMillis) {
         rotateMillis = newRotateMillis;
         executorService.shutdownNow();
-        startExecutor();
+        startExecutor(true);
+    }
+
+    public void stopRotatorRunnable() {
+        if (isRotatorRunnableRunning) {
+            executorService.shutdownNow();
+            startExecutor(false);
+        }
+    }
+
+    public void getRandomWord() {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                handleRandomWord();
+            }
+        });
     }
 
     public void addRotatorHandler(Handler handler) {

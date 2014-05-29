@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
-    android:gravity="center"
     android:orientation="vertical">
 
     <TextView
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="30sp"
@@ -24,5 +24,47 @@
         android:textColor="#ff1ace16"
         android:textStyle="bold"
         android:text="@string/quiz_completion_message_notification"/>
+
+    <TextView
+        android:id="@+id/user_message"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:visibility="invisible"
+        android:textStyle="bold"
+        android:background="@android:color/darker_gray"
+        android:text="@string/quiz_completion_guest_message"/>
+
+    <TextView
+        android:id="@+id/user_answered_text"
+        android:layout_width="match_parent"
+        android:paddingLeft="15dp"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="#ff1ace16"
+        android:visibility="invisible"
+        android:text="@string/quiz_completion_total_answered"/>
+
+    <TextView
+        android:id="@+id/user_wrongly_answered_text"
+        android:layout_width="match_parent"
+        android:paddingLeft="15dp"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:visibility="invisible"
+        android:textColor="#ffce0513"
+        android:text="@string/quiz_completion_total_wrong"/>
+
+    <TextView
+        android:id="@+id/user_unanswered_text"
+        android:layout_width="match_parent"
+        android:paddingLeft="15dp"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:visibility="invisible"
+        android:textColor="#ffce0513"
+        android:text="@string/quiz_completion_total_left"/>
 
 </LinearLayout>

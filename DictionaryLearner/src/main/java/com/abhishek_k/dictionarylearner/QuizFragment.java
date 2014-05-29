@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abhishek_k.dictionarylearner.model.QuizQuestion;
+import com.abhishek_k.dictionarylearner.model.Report;
 import com.abhishek_k.dictionarylearner.service.WordHandlerService;
 
 public class QuizFragment extends Fragment {
@@ -27,9 +28,19 @@ public class QuizFragment extends Fragment {
     private Button nextQuestionButton;
     private QuizQuestion question;
     private int currentIndex = 0;
+    private Report report;
     private WordHandlerService handlerService;
     private static final String LOG_TAG = QuizFragment.class.getSimpleName();
     private static final String CURRENT_QUES_INDEX = "current_quiz_index";
+    public static final String EXTRA_USER_NAME = "com.abhishek_k.dictionarylearner.username";
+
+    public static QuizFragment newInstance(String username) {
+        QuizFragment fragment = new QuizFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("report", new Report(username));
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +48,11 @@ public class QuizFragment extends Fragment {
         setHasOptionsMenu(true);
         if (savedInstanceState != null) {
             currentIndex = savedInstanceState.getInt(CURRENT_QUES_INDEX, 0);
+            report = (Report) savedInstanceState.getSerializable("report");
+        } else {
+            report = (Report) getArguments().getSerializable("report");
         }
+        Log.d(LOG_TAG, "Creating report for the user: " + report.getUserName());
         getActivity().setTitle(R.string.play_quiz);
         Log.d(LOG_TAG, "onCreate() currentIndex is: " + currentIndex);
     }
@@ -64,8 +79,10 @@ public class QuizFragment extends Fragment {
                 String userAnswer = checkedButton.getText().toString();
                 if (userAnswer.equals(question.getAnswer())) {
                     Toast.makeText(getActivity(), "Correct :)", Toast.LENGTH_SHORT).show();
+                    report.incAnswered();
                 } else {
                     Toast.makeText(getActivity(), "Failed, Correct answer is: " + question.getAnswer(), Toast.LENGTH_SHORT).show();
+                    report.incWrong();
                 }
                 getAndSetNextQuestion();
             }
@@ -84,6 +101,7 @@ public class QuizFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getAndSetNextQuestion();
+                report.incUnAnswered();
             }
         });
         handlerService.quizQuestion(currentIndex);
@@ -111,6 +129,9 @@ public class QuizFragment extends Fragment {
             Toast.makeText(getActivity(), "You completed the quiz", Toast.LENGTH_LONG).show();
             nextQuestionButton.setEnabled(false);
             Intent intent = new Intent(getActivity(), QuizCompletionActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("report", report);
+            intent.putExtras(bundle);
             startActivity(intent);
         } else {
             Log.d(LOG_TAG, "Setting question: " + question.getQuestionId());
@@ -128,6 +149,7 @@ public class QuizFragment extends Fragment {
         super.onSaveInstanceState(outState);
         Log.i(LOG_TAG, "onSaveInstanceState() called");
         outState.putInt(CURRENT_QUES_INDEX, currentIndex);
+        outState.putSerializable("report", report);
     }
 
     @Override

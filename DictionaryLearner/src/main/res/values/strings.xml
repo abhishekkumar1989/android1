@@ -27,5 +27,9 @@
     <string name="quiz_completion_message_notification">Quiz is completed</string>
     <string name="play_quiz">Play Quiz</string>
     <string name="quiz_completed_message">Quiz Completed</string>
+    <string name="quiz_completion_guest_message">Hi Guest</string>
+    <string name="quiz_completion_total_answered">Total Answered: </string>
+    <string name="quiz_completion_total_wrong">Total Wrong: </string>
+    <string name="quiz_completion_total_left">Total UnAnswered: </string>
 
 </resources>

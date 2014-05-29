@@ -8,4 +8,5 @@ public class QuizCompletionActivity extends SingleFragmentActivity {
     public Fragment createFragment() {
         return new QuizCompletionFragment();
     }
+
 }

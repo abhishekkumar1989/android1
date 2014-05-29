@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.abhishek_k.dictionarylearner.model.Word;
 import com.abhishek_k.dictionarylearner.service.WordHandlerService;
 
+import static com.abhishek_k.dictionarylearner.QuizFragment.EXTRA_USER_NAME;
+
 public class WordsRotatorFragment extends Fragment {
 
     private TextView wordView;
@@ -78,6 +80,7 @@ public class WordsRotatorFragment extends Fragment {
 
     public void startQuizActivity(View view) {
         Intent intent = new Intent(getActivity(), QuizActivity.class);
+        intent.putExtra(EXTRA_USER_NAME, "Guest");
         startActivity(intent);
     }
 

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ public class QuizFragment extends Fragment {
     private static final String LOG_TAG = QuizFragment.class.getSimpleName();
     private static final String CURRENT_QUES_INDEX = "current_quiz_index";
     public static final String EXTRA_USER_NAME = "com.abhishek_k.dictionarylearner.username";
+    private ImageView answerImageView;
 
     public static QuizFragment newInstance(String username) {
         QuizFragment fragment = new QuizFragment();
@@ -61,6 +63,7 @@ public class QuizFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
         questionText = (TextView) view.findViewById(R.id.quiz_question_text);
+        answerImageView = (ImageView) view.findViewById(R.id.answer_image_button);
         optionsRadio = (RadioGroup) view.findViewById(R.id.quiz_question_radioOptions);
         optionsRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -78,13 +81,15 @@ public class QuizFragment extends Fragment {
                 RadioButton checkedButton = (RadioButton) optionsRadio.findViewById(checkedRadioButtonId);
                 String userAnswer = checkedButton.getText().toString();
                 if (userAnswer.equals(question.getAnswer())) {
-                    Toast.makeText(getActivity(), "Correct :)", Toast.LENGTH_SHORT).show();
+                    answerImageView.setImageResource(R.drawable.tick_mark);
                     report.incAnswered();
                 } else {
-                    Toast.makeText(getActivity(), "Failed, Correct answer is: " + question.getAnswer(), Toast.LENGTH_SHORT).show();
+                    answerImageView.setImageResource(R.drawable.cross_mark);
+                    Toast.makeText(getActivity(), "Correct answer is: " + question.getAnswer(), Toast.LENGTH_SHORT).show();
                     report.incWrong();
                 }
-                getAndSetNextQuestion();
+                answerImageView.setVisibility(ImageView.VISIBLE);
+                getAndSetNextQuestion(2000);
             }
         });
         handlerService = WordHandlerService.get(getActivity());
@@ -100,11 +105,11 @@ public class QuizFragment extends Fragment {
         nextQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getAndSetNextQuestion();
+                getAndSetNextQuestion(1);
                 report.incUnAnswered();
             }
         });
-        handlerService.quizQuestion(currentIndex);
+        handlerService.quizQuestion(currentIndex, 1);
 
         if (NavUtils.getParentActivityName(getActivity()) != null) {
             getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -113,17 +118,18 @@ public class QuizFragment extends Fragment {
         return view;
     }
 
-    private void getAndSetNextQuestion() {
+    private void getAndSetNextQuestion(long waitMillis) {
         Log.d(LOG_TAG, "Get and set next question, currentIndex: " + currentIndex);
-        optionsRadio.clearCheck();
         submitAnswerButton.setEnabled(false);
         if (question != null) {
             int currentQuestionId = question.getQuestionId();
-            handlerService.quizQuestion(currentQuestionId);
+            handlerService.quizQuestion(currentQuestionId, waitMillis);
         }
     }
 
     private void setQuiz() {
+        optionsRadio.clearCheck();
+        answerImageView.setVisibility(ImageView.INVISIBLE);
         if (question == null) {
             Log.d(LOG_TAG, "Setting question: null");
             Toast.makeText(getActivity(), "You completed the quiz", Toast.LENGTH_SHORT).show();

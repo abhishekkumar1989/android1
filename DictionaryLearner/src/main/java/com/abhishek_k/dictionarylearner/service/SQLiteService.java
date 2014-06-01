@@ -32,7 +32,6 @@ public class SQLiteService extends SQLiteOpenHelper {
     private String[] allQuizColumns = {QUESTION_ID, QUESTION_KEY, ANSWER_OPTION1_KEY, ANSWER_OPTION2_KEY,
             ANSWER_OPTION3_KEY, ANSWER_OPTION4_KEY, ANSWER_KEY};
     public static SQLiteService sqlService;
-    private SQLiteDatabase database;
 
     private static final String TABLE_DICTIONARY_CREATE = "create table " + TABLE_DICTIONARY_NAME +
             "(" +
@@ -72,6 +71,16 @@ public class SQLiteService extends SQLiteOpenHelper {
         return question;
     }
 
+    public QuizQuestion getLastQuizQuestion() {
+        Cursor cursor = getReadableDatabase().query(TABLE_QUIZ_NAME, allQuizColumns, null, null, null, null, QUESTION_ID + " DESC", "1");
+        cursor.moveToNext();
+        QuizQuestion question = QuizQuestion.builder().id(0);
+        while (!cursor.isAfterLast()) {
+            question = QuizQuestion.builder().id(cursor.getInt(0));
+        }
+        return question;
+    }
+
     public Word randomWord() {
         Cursor cursor = getReadableDatabase().query(TABLE_DICTIONARY_NAME, allColumns, null, null, null, null, "RANDOM()", "1");
         cursor.moveToLast();
@@ -107,7 +116,6 @@ public class SQLiteService extends SQLiteOpenHelper {
 
     public SQLiteService(Context context) {
         super(context, DATABASE_NAME, null, DICTIONARY_VERSION);
-        database = getWritableDatabase();
     }
 
     @Override
@@ -123,5 +131,7 @@ public class SQLiteService extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUIZ_NAME);
         onCreate(db);
     }
+
+
 
 }

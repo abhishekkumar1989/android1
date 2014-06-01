@@ -11,6 +11,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 public class WordHandlerService {
 
     private Handler wordDisplayHandler;
@@ -111,8 +113,8 @@ public class WordHandlerService {
         });
     }
 
-    public void quizQuestion(final int id) {
-        executorService.execute(new Runnable() {
+    public void quizQuestion(final int id, long waitMillis) {
+        executorService.schedule(new Runnable() {
             @Override
             public void run() {
                 final QuizQuestion question = SQLiteService.get(context).getQuestion(id);
@@ -123,7 +125,7 @@ public class WordHandlerService {
                     }
                 });
             }
-        });
+        }, waitMillis, MILLISECONDS);
     }
 
     public void remove(final Word word) {

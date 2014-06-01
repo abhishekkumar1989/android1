@@ -15,38 +15,54 @@
             style="?android:listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#ff1e32ce"
             android:layout_marginTop="20dp"
             android:text="@string/quiz_question"
+            android:textColor="#ff1e32ce"
             android:textSize="20dp" />
 
-        <RadioGroup
-            android:id="@+id/quiz_question_radioOptions"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <RadioButton
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:id="@+id/quiz_question_radioOptions"
+                android:layout_weight="0.6"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Options 1" />
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Options 2" />
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Options 3" />
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Options 4" />
-        </RadioGroup>
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    style="@style/RadioButtonStyle"
+                    android:text="Options 1" />
+
+                <RadioButton
+                    style="@style/RadioButtonStyle"
+                    android:text="Options 2" />
+
+                <RadioButton
+                    style="@style/RadioButtonStyle"
+                    android:text="Options 3" />
+
+                <RadioButton
+                    style="@style/RadioButtonStyle"
+                    android:text="Options 4" />
+            </RadioGroup>
+                <ImageView
+                    android:id="@+id/answer_image_button"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/cross_mark"
+                    android:visibility="invisible"
+                    android:layout_weight="0.4"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content" />
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/quiz_submit_answer_button"
             android:layout_width="match_parent"
-            android:enabled="false"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:text="@string/submit_quiz_answer_button" />
 
         <Button

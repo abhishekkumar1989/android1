@@ -18,7 +18,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/quiz_question"
             android:textColor="#ff1e32ce"
-            android:textSize="20dp" />
+            android:textSize="15dp" />
 
         <LinearLayout
             android:layout_width="match_parent"

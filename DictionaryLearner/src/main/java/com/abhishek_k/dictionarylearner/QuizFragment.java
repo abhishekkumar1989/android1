@@ -35,6 +35,7 @@ public class QuizFragment extends Fragment {
     private static final String CURRENT_QUES_INDEX = "current_quiz_index";
     public static final String EXTRA_USER_NAME = "com.abhishek_k.dictionarylearner.username";
     private ImageView answerImageView;
+    private boolean isNewQuestion = true;
 
     public static QuizFragment newInstance(String username) {
         QuizFragment fragment = new QuizFragment();
@@ -68,9 +69,9 @@ public class QuizFragment extends Fragment {
         optionsRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == -1) {
+                if(checkedId == -1) {
                     submitAnswerButton.setEnabled(false);
-                } else if (question != null) {
+                } else if (question != null && isNewQuestion) {
                     submitAnswerButton.setEnabled(true);
                 }
             }
@@ -79,6 +80,7 @@ public class QuizFragment extends Fragment {
         submitAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isNewQuestion = false;
                 submitAnswerButton.setEnabled(false);
                 int checkedRadioButtonId = optionsRadio.getCheckedRadioButtonId();
                 RadioButton checkedButton = (RadioButton) optionsRadio.findViewById(checkedRadioButtonId);
@@ -135,15 +137,14 @@ public class QuizFragment extends Fragment {
         if (question == null) {
             Log.d(LOG_TAG, "Setting question: null");
             Toast.makeText(getActivity(), "You completed the quiz", Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(getActivity(), WordRotatorActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Intent intent = new Intent(getActivity(), QuizCompletionActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("report", report);
             intent.putExtras(bundle);
-            intent.putExtra("quizCompletedNotify", true);
             startActivity(intent);
+            getActivity().finish();
         } else {
+            isNewQuestion = true;
             Log.d(LOG_TAG, "Setting question: " + question.getQuestionId());
             currentIndex = question.getQuestionId();
             questionText.setText(question.getQuestion());

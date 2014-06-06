@@ -49,7 +49,7 @@ public class QuizFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         if (savedInstanceState != null) {
-            currentIndex = savedInstanceState.getInt(CURRENT_QUES_INDEX, 0);
+            currentIndex = savedInstanceState.getInt(CURRENT_QUES_INDEX, 1) - 1;
             report = (Report) savedInstanceState.getSerializable("report");
         } else {
             report = (Report) getArguments().getSerializable("report");
@@ -68,7 +68,9 @@ public class QuizFragment extends Fragment {
         optionsRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (question != null) {
+                if (checkedId == -1) {
+                    submitAnswerButton.setEnabled(false);
+                } else if (question != null) {
                     submitAnswerButton.setEnabled(true);
                 }
             }
@@ -77,6 +79,7 @@ public class QuizFragment extends Fragment {
         submitAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                submitAnswerButton.setEnabled(false);
                 int checkedRadioButtonId = optionsRadio.getCheckedRadioButtonId();
                 RadioButton checkedButton = (RadioButton) optionsRadio.findViewById(checkedRadioButtonId);
                 String userAnswer = checkedButton.getText().toString();
@@ -109,7 +112,7 @@ public class QuizFragment extends Fragment {
                 report.incUnAnswered();
             }
         });
-        handlerService.quizQuestion(currentIndex, 1);
+        handlerService.nextQuizQuestion(currentIndex, 1);
 
         if (NavUtils.getParentActivityName(getActivity()) != null) {
             getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -120,24 +123,25 @@ public class QuizFragment extends Fragment {
 
     private void getAndSetNextQuestion(long waitMillis) {
         Log.d(LOG_TAG, "Get and set next question, currentIndex: " + currentIndex);
-        submitAnswerButton.setEnabled(false);
         if (question != null) {
             int currentQuestionId = question.getQuestionId();
-            handlerService.quizQuestion(currentQuestionId, waitMillis);
+            handlerService.nextQuizQuestion(currentQuestionId, waitMillis);
         }
     }
 
     private void setQuiz() {
         optionsRadio.clearCheck();
-        submitAnswerButton.setEnabled(false);
         answerImageView.setVisibility(ImageView.INVISIBLE);
         if (question == null) {
             Log.d(LOG_TAG, "Setting question: null");
             Toast.makeText(getActivity(), "You completed the quiz", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getActivity(), QuizCompletionActivity.class);
+
+            Intent intent = new Intent(getActivity(), WordRotatorActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             Bundle bundle = new Bundle();
             bundle.putSerializable("report", report);
             intent.putExtras(bundle);
+            intent.putExtra("quizCompletedNotify", true);
             startActivity(intent);
         } else {
             Log.d(LOG_TAG, "Setting question: " + question.getQuestionId());

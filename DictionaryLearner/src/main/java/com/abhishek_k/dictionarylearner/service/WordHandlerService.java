@@ -113,11 +113,11 @@ public class WordHandlerService {
         });
     }
 
-    public void quizQuestion(final int id, long waitMillis) {
+    public void nextQuizQuestion(final int id, long waitMillis) {
         executorService.schedule(new Runnable() {
             @Override
             public void run() {
-                final QuizQuestion question = SQLiteService.get(context).getQuestion(id);
+                final QuizQuestion question = SQLiteService.get(context).getNextQuestion(id);
                 quizQuestionHandler.post(new Runnable() {
                     @Override
                     public void run() {

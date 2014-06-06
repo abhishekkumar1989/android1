@@ -141,6 +141,7 @@ public class WordsRotatorFragment extends Fragment {
 
     public void startQuizActivity(String username) {
         Intent intent = new Intent(getActivity(), QuizActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.putExtra(EXTRA_USER_NAME, username);
         startActivity(intent);
     }

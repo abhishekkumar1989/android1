@@ -69,7 +69,7 @@ public class QuizFragment extends Fragment {
         optionsRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId == -1) {
+                if(checkedId == RadioButton.NO_ID) {
                     submitAnswerButton.setEnabled(false);
                 } else if (question != null && isNewQuestion) {
                     submitAnswerButton.setEnabled(true);

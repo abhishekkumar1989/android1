@@ -2,6 +2,7 @@ package com.abhishek_k.dictionarylearner;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -143,6 +144,12 @@ public class WordsRotatorFragment extends Fragment {
         Intent intent = new Intent(getActivity(), QuizActivity.class);
         intent.putExtra(EXTRA_USER_NAME, username);
         startActivity(intent);
+    }
+
+    @Override
+    public void onStop() {
+        Log.v(LOG_TAG, "onStop() called");
+        super.onStop();
     }
 
     @Override
